@@ -17,8 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * CAlso add information on how to contact you by electronic and paper mail.
- *
  * Neon Tube Copyright (C) 2018 Frank Reins (github@rein-zieh.de)
  *
  * This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -36,23 +34,23 @@ typedef void (*timerEventHandler)(NTTimer&);
 
 class NTTimer
 {
-  public:
-    NTTimer(uint32_t duration = 0, timerEventHandler handler = NULL);
-    
-    void set(uint32_t duration = 0, timerEventHandler handler = NULL);
-    void setHandler(timerEventHandler handler = NULL);
+    public:
+        NTTimer(uint32_t duration = 0, timerEventHandler handler = NULL);
+        
+        void set(uint32_t duration = 0, timerEventHandler handler = NULL);
+        void setHandler(timerEventHandler handler = NULL);
 
-    boolean check();
-    boolean checkAndRepeat();
-    boolean checkAndSet(uint32_t duration);
-  
-    void run();
+        boolean check();
+        boolean checkAndRepeat();
+        boolean checkAndSet(uint32_t duration);
+      
+        void run();
 
-  private:
-    uint32_t duration;
-    uint32_t last;
+    private:
+        uint32_t duration;
+        uint32_t last;
 
-    timerEventHandler handler;
+        timerEventHandler handler;
 };
 
 #endif

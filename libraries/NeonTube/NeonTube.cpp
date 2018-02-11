@@ -17,8 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * CAlso add information on how to contact you by electronic and paper mail.
- *
  * Neon Tube Copyright (C) 2018 Frank Reins (github@rein-zieh.de)
  *
  * This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -29,12 +27,12 @@
 #include "NeonTube.h"
 
 NeonTube::NeonTube() {
-	pin = 0;
+    pin = 0;
 
     runState = NT_STOP;
-	ledState = 0;
-	
-	startDelay = 0;
+    ledState = 0;
+    
+    startDelay = 0;
     pattern = NT_NOPATTERN;
     patternIndex = 0;
     patternPointer = NULL;
@@ -57,19 +55,19 @@ void NeonTube::init(
     uint8_t    *patternCustom,
     uint8_t    patternSize
 ) {
-	
-	if (pin >= 0 && pin <= 5)
-		this->pin = pin;
+    
+    if (pin >= 0 && pin <= 5)
+        this->pin = pin;
 
-	if (startDelay >= 0) 		
-		this->startDelay = startDelay;
+    if (startDelay >= 0)        
+        this->startDelay = startDelay;
 
-	initFails(failsInterval, failsVariation);
+    initFails(failsInterval, failsVariation);
 
-	initPattern(pattern, patternRythm, patternCustom, patternSize);
+    initPattern(pattern, patternRythm, patternCustom, patternSize);
 
-	ledState = 0;
-	pinMode(this->pin, OUTPUT);
+    ledState = 0;
+    pinMode(this->pin, OUTPUT);
 
 }
 
@@ -77,8 +75,8 @@ void NeonTube::initFails(
     uint32_t    failsInterval, 
     uint8_t     failsVariation
 ) {
-	this->failsInterval = failsInterval;
-	this->failsVariation = failsVariation;
+    this->failsInterval = failsInterval;
+    this->failsVariation = failsVariation;
 }
 
 void NeonTube::initPattern(
@@ -87,39 +85,39 @@ void NeonTube::initPattern(
     uint8_t     *patternCustom,
     uint8_t     patternSize
 ) {
-	if (pattern >= NT_NOPATTERN && pattern <= NT_ANALOGPATTERN)
-		this->pattern = pattern;
+    if (pattern >= NT_NOPATTERN && pattern <= NT_ANALOGPATTERN)
+        this->pattern = pattern;
 
-	if (patternCustom) {
-		patternPointer = patternCustom;
-		if (patternSize) {
-		    this->patternSize = patternSize;
-		}
-	} else {
+    if (patternCustom) {
+        patternPointer = patternCustom;
+        if (patternSize) {
+            this->patternSize = patternSize;
+        }
+    } else {
 
-		if (this->pattern == NT_DIGITALPATTERN) {
-			patternPointer = patternDigital;
-		    this->patternSize = sizeof(patternDigital)/sizeof(patternDigital[0]);
-		}
+        if (this->pattern == NT_DIGITALPATTERN) {
+            patternPointer = patternDigital;
+            this->patternSize = sizeof(patternDigital)/sizeof(patternDigital[0]);
+        }
 
-		else if (this->pattern == NT_ANALOGPATTERN) {
-			patternPointer = patternAnalog;
-		    this->patternSize = sizeof(patternAnalog)/sizeof(patternAnalog[0]);
-		}
-	}
+        else if (this->pattern == NT_ANALOGPATTERN) {
+            patternPointer = patternAnalog;
+            this->patternSize = sizeof(patternAnalog)/sizeof(patternAnalog[0]);
+        }
+    }
 
-	if (patternRythm) {
-		this->patternRythm = patternRythm;
-	} 
+    if (patternRythm) {
+        this->patternRythm = patternRythm;
+    } 
 
     patternIndex = 0;
 }
 
 void NeonTube::on() {
-	lightTimer.set(startDelay);
+    lightTimer.set(startDelay);
     runState = NT_START;
     patternIndex = 0;
-	ledState = 0;
+    ledState = 0;
     run();
 }
 
@@ -129,66 +127,66 @@ void NeonTube::off() {
 }
 
 void NeonTube::run() {
-	switch(runState) {
-		case NT_PATTERN : runPattern(); break;
-		case NT_GLOW    : runGlow();    break;
-		case NT_START   : runStart();   break;
-		case NT_STOP    : runStop();    break;
-	}
+    switch(runState) {
+        case NT_PATTERN : runPattern(); break;
+        case NT_GLOW    : runGlow();    break;
+        case NT_START   : runStart();   break;
+        case NT_STOP    : runStop();    break;
+    }
 }
 
 void NeonTube::runStart() {
-	if (lightTimer.check()) {
-		switch (pattern) {
-		    case NT_DIGITALPATTERN : {
-				runState = NT_PATTERN;
-				lightTimer.set(patternRythm);
-		    	return;
-		    }
-		    case NT_ANALOGPATTERN : {
-				runState = NT_PATTERN;
-				lightTimer.set(patternRythm);
-		    	return;
-		    }
-		    case NT_NOPATTERN : {
-				ledState = 1;
-				digitalWrite(pin, 1);
-			    runState = NT_GLOW;
-		    	return;
-		    }
-		}
-	}
+    if (lightTimer.check()) {
+        switch (pattern) {
+            case NT_DIGITALPATTERN : {
+                runState = NT_PATTERN;
+                lightTimer.set(patternRythm);
+                return;
+            }
+            case NT_ANALOGPATTERN : {
+                runState = NT_PATTERN;
+                lightTimer.set(patternRythm);
+                return;
+            }
+            case NT_NOPATTERN : {
+                ledState = 1;
+                digitalWrite(pin, 1);
+                runState = NT_GLOW;
+                return;
+            }
+        }
+    }
 }
 
 void NeonTube::runPattern() {
-	if (lightTimer.checkAndRepeat()) {
+    if (lightTimer.checkAndRepeat()) {
 
-		if (patternIndex >= patternSize) {
-			ledState = 1;
-			digitalWrite(pin, 1);
-			runState = NT_GLOW;
-			return;
-		} else {
-			if ( *(patternPointer + patternIndex) != ledState) {
-				ledState = *(patternPointer + patternIndex);
-				if (pattern == NT_DIGITALPATTERN)
-					digitalWrite(pin, ledState);
-				else
-					analogWrite(pin, ledState);
-			}
-		}
-		patternIndex++;
+        if (patternIndex >= patternSize) {
+            ledState = 1;
+            digitalWrite(pin, 1);
+            runState = NT_GLOW;
+            return;
+        } else {
+            if ( *(patternPointer + patternIndex) != ledState) {
+                ledState = *(patternPointer + patternIndex);
+                if (pattern == NT_DIGITALPATTERN)
+                    digitalWrite(pin, ledState);
+                else
+                    analogWrite(pin, ledState);
+            }
+        }
+        patternIndex++;
 
-	}
+    }
 }
 
 void NeonTube::runGlow() {
-	// evtl. Fehler einstreuen
+    // evtl. Fehler einstreuen
 }
 
 void NeonTube::runStop() {
-	ledState = 0;
-	digitalWrite(pin, 0);
+    ledState = 0;
+    digitalWrite(pin, 0);
 }
 
 

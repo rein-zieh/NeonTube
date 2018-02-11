@@ -17,8 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * CAlso add information on how to contact you by electronic and paper mail.
- *
  * Neon Tube Copyright (C) 2018 Frank Reins (github@rein-zieh.de)
  *
  * This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
@@ -31,43 +29,43 @@
 
 NTTimer::NTTimer(uint32_t duration, timerEventHandler handler)
 {
-  set(duration);
-  setHandler(handler);
+    set(duration);
+    setHandler(handler);
 }
 
 void NTTimer::set(uint32_t duration, timerEventHandler handler) {
-  this->duration = duration;
-  last = millis();
-  if (handler) this->handler = handler;
+    this->duration = duration;
+    last = millis();
+    if (handler) this->handler = handler;
 }
 
 void NTTimer::setHandler(timerEventHandler handler) {
-  this->handler = handler;
+    this->handler = handler;
 }
 
 boolean NTTimer::check() {
-  return (millis() - last >= duration);
+    return (millis() - last >= duration);
 }
 
 boolean NTTimer::checkAndRepeat() {
-  if (millis() - last < duration) {
-    return false;
-  }
-  last = millis();
-  return true;  
+    if (millis() - last < duration) {
+        return false;
+    }
+    last = millis();
+    return true;  
 }
 
 boolean NTTimer::checkAndSet(uint32_t duration = 0) {
-  if (millis() - last < this->duration) {
-    return false;
-  }
-  last = millis();
-  this->duration = duration;
-  return true;  
+    if (millis() - last < this->duration) {
+        return false;
+    }
+    last = millis();
+    this->duration = duration;
+    return true;  
 }
 
 void NTTimer::run() {
-  if (handler && checkAndRepeat()) {
-      handler(*this);
-  }
+    if (handler && checkAndRepeat()) {
+        handler(*this);
+    }
 }

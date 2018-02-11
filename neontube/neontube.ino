@@ -17,8 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * CAlso add information on how to contact you by electronic and paper mail.
- *
  * Neon Tube Copyright (C) 2018 Frank Reins (github@rein-zieh.de)
  *
  * This program comes with ABSOLUTELY NO WARRANTY
