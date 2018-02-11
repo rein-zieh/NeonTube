@@ -21,9 +21,7 @@
  *
  * Neon Tube Copyright (C) 2018 Frank Reins (github@rein-zieh.de)
  *
- * This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
- * This is free software, and you are welcome to redistribute it
- * under certain conditions; type `show c' for details.
+ * This program comes with ABSOLUTELY NO WARRANTY
  */
 
 /*
