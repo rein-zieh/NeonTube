@@ -1,7 +1,7 @@
 /*
  * NeonTube.cpp 
  *
- * Neon Tube - V 0.1 (Proof of concept)
+ * Neon Tube - V 0.2 (Proof of concept)
  * Toolkit for simulating a neon tube
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,10 @@
 #include "NeonTube.h"
 
 NeonTube::NeonTube() {
+    reset();
+}
+
+void NeonTube::reset() {
     pin = 0;
 
     runState = NT_STOP;
@@ -45,71 +49,42 @@ NeonTube::NeonTube() {
     lightTimer.set(0);
 }
 
-void NeonTube::init(
-    uint8_t    pin, 
-    uint32_t   startDelay, 
-    uint32_t   failsInterval, 
-    uint8_t    failsVariation,
-    NT_Pattern pattern, 
-    uint8_t    patternRythm,
-    uint8_t    *patternCustom,
-    uint8_t    patternSize
-) {
+void NeonTube::init(uint8_t pin, uint32_t startDelay) {
+    reset();
     
-    if (pin >= 0 && pin <= 5)
-        this->pin = pin;
+    this->pin = pin;
+    this->startDelay = startDelay;
 
-    if (startDelay >= 0)        
-        this->startDelay = startDelay;
-
-    initFails(failsInterval, failsVariation);
-
-    initPattern(pattern, patternRythm, patternCustom, patternSize);
-
-    ledState = 0;
     pinMode(this->pin, OUTPUT);
 
 }
 
-void NeonTube::initFails(
-    uint32_t    failsInterval, 
-    uint8_t     failsVariation
-) {
+void NeonTube::setFails(uint32_t failsInterval, uint8_t failsVariation) {
     this->failsInterval = failsInterval;
     this->failsVariation = failsVariation;
 }
 
-void NeonTube::initPattern(
-    NT_Pattern  pattern, 
-    uint8_t     patternRythm,
-    uint8_t     *patternCustom,
-    uint8_t     patternSize
-) {
-    if (pattern >= NT_NOPATTERN && pattern <= NT_ANALOGPATTERN)
-        this->pattern = pattern;
-
+void NeonTube::setDigitalPattern(uint8_t *patternCustom, uint8_t patternSize, uint8_t patternRythm) {
     if (patternCustom) {
-        patternPointer = patternCustom;
-        if (patternSize) {
-            this->patternSize = patternSize;
-        }
-    } else {
-
-        if (this->pattern == NT_DIGITALPATTERN) {
-            patternPointer = patternDigital;
-            this->patternSize = sizeof(patternDigital)/sizeof(patternDigital[0]);
-        }
-
-        else if (this->pattern == NT_ANALOGPATTERN) {
-            patternPointer = patternAnalog;
-            this->patternSize = sizeof(patternAnalog)/sizeof(patternAnalog[0]);
-        }
-    }
-
-    if (patternRythm) {
+        this->pattern = NT_DIGITALPATTERN;
+        this->patternSize = patternSize;
+        this->patternPointer = patternCustom;
         this->patternRythm = patternRythm;
-    } 
+    } else {
+        this->patternSize = 0;
+    }
+    patternIndex = 0;
+}
 
+void NeonTube::setAnalogPattern(uint8_t *patternCustom, uint8_t patternSize, uint8_t patternRythm) {
+    if (patternCustom) {
+        this->pattern = NT_ANALOGPATTERN;
+        this->patternSize = patternSize;
+        this->patternPointer = patternCustom;
+        this->patternRythm = patternRythm;
+    } else {
+        this->patternSize = 0;
+    }
     patternIndex = 0;
 }
 

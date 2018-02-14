@@ -1,7 +1,7 @@
 /*
  * neontube.ino
  *
- * Neon Tube - V 0.1 (Proof of concept)
+ * Neon Tube - V 0.2 (Proof of concept)
  * Toolkit for simulating a neon tube
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,10 +58,29 @@ NTTimer dccTimer;
 NeonTube tube0;
 NeonTube tube1;
 NeonTube tube2;
+NeonTube tube3;
 
-uint8_t myPattern[13] = {
+uint8_t myAnalog[20] = {
+  10, 40, 255, 0, 10, 20, 30, 40, 50, 200, 
   10, 40, 255, 0, 10, 20, 30, 40, 50, 200
 };
+
+uint8_t myDigital[30] = {
+    1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 0, 0, 0, 0, 0, 1, 1,
+    1, 0, 0, 0, 0, 1, 1, 1, 0, 0,
+};
+
+// 
+/*uint8_t patternAnalog[] = {
+      0,   0,  10,  20,  30,  30,  40,  50,  60,  70,
+     80,  70,  70,  60,  60,  50,  50,  50,  60,  70, 
+     80,  90, 100, 120, 140, 160, 240, 250, 100, 150,
+    250, 250, 140, 240, 230, 220, 100,  80,  70,  70,
+     70,  80,  80, 140, 130, 120, 110, 200, 210, 220,
+    220, 100,  90,  40,  30,  30,  30,  20,  10,  10 
+}; */
+
 
 /*
  * Functions
@@ -85,9 +104,15 @@ void dcc_status_toggle (NTTimer &timer) {
  */
 void setup() {
   dccTimer.set(7000,dcc_status_toggle);
-  tube0.init(0, 1500, 0, 0, NT_ANALOGPATTERN, 25, myPattern, 25);
-  tube1.init(1, 0, random(5000,10000), 50, NT_NOPATTERN);
-  tube2.init(2, random(500,2500), 0, 0, NT_DIGITALPATTERN, 25);
+
+  tube0.init(0, 2000);
+  tube0.setAnalogPattern(myAnalog, sizeof(myAnalog)/sizeof(myAnalog[0]), 200);
+  
+  tube1.init(1, 0);
+  
+  tube2.init(2, 3000);
+  tube2.setDigitalPattern(myDigital, sizeof(myDigital)/sizeof(myDigital[0]), 25);
+
 }
  
 /*
