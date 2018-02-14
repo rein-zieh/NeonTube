@@ -1,7 +1,7 @@
 # NeonTube
 A simple Arduino toolkit to simulate neon tubes with leds.
 
-## Version 0.1´2
+## Version 0.2
 
 This is still just a **Proof of Concept**.
 
