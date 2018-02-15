@@ -60,12 +60,12 @@ NeonTube tube1;
 NeonTube tube2;
 NeonTube tube3;
 
-uint8_t myAnalog[20] = {
+const uint8_t myAnalog[] = {
   10, 40, 255, 0, 10, 20, 30, 40, 50, 200, 
   10, 40, 255, 0, 10, 20, 30, 40, 50, 200
 };
 
-uint8_t myDigital[30] = {
+const uint8_t myDigital[] = {
     1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
     1, 1, 1, 0, 0, 0, 0, 0, 1, 1,
     1, 0, 0, 0, 0, 1, 1, 1, 0, 0,
@@ -105,12 +105,12 @@ void dcc_status_toggle (NTTimer &timer) {
 void setup() {
   dccTimer.set(7000,dcc_status_toggle);
 
-  tube0.init(0, 2000);
-  tube0.setAnalogPattern(myAnalog, sizeof(myAnalog)/sizeof(myAnalog[0]), 200);
+  tube0.init(0, 1000);
+  tube0.setAnalogPattern(myAnalog, sizeof(myAnalog)/sizeof(myAnalog[0]), 25);
   
   tube1.init(1, 0);
   
-  tube2.init(2, 3000);
+  tube2.init(2, 1200);
   tube2.setDigitalPattern(myDigital, sizeof(myDigital)/sizeof(myDigital[0]), 25);
 
 }

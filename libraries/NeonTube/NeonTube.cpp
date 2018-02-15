@@ -64,7 +64,7 @@ void NeonTube::setFails(uint32_t failsInterval, uint8_t failsVariation) {
     this->failsVariation = failsVariation;
 }
 
-void NeonTube::setDigitalPattern(uint8_t *patternCustom, uint8_t patternSize, uint8_t patternRythm) {
+void NeonTube::setDigitalPattern(const uint8_t *patternCustom, uint8_t patternSize, uint8_t patternRythm) {
     if (patternCustom) {
         this->pattern = NT_DIGITALPATTERN;
         this->patternSize = patternSize;
@@ -76,7 +76,7 @@ void NeonTube::setDigitalPattern(uint8_t *patternCustom, uint8_t patternSize, ui
     patternIndex = 0;
 }
 
-void NeonTube::setAnalogPattern(uint8_t *patternCustom, uint8_t patternSize, uint8_t patternRythm) {
+void NeonTube::setAnalogPattern(const uint8_t *patternCustom, uint8_t patternSize, uint8_t patternRythm) {
     if (patternCustom) {
         this->pattern = NT_ANALOGPATTERN;
         this->patternSize = patternSize;
@@ -102,12 +102,19 @@ void NeonTube::off() {
 }
 
 void NeonTube::run() {
-    switch(runState) {
-        case NT_PATTERN : runPattern(); break;
-        case NT_GLOW    : runGlow();    break;
-        case NT_START   : runStart();   break;
-        case NT_STOP    : runStop();    break;
-    }
+/*   
+ *   switch(runState) {
+ *       case NT_PATTERN : runPattern(); break;
+ *       case NT_GLOW    : runGlow();    break;
+ *       case NT_START   : runStart();   break;
+ *       case NT_STOP    : runStop();    break;
+ *   }
+ * To avoid lookup table in RAM memory
+ */
+    if (runState == NT_PATTERN) { runPattern(); return; }
+    if (runState == NT_GLOW)    { runGlow();    return; }
+    if (runState == NT_START)   { runStart();   return; }
+    if (runState == NT_STOP)    { runStop();    return; }
 }
 
 void NeonTube::runStart() {

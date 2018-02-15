@@ -48,12 +48,12 @@ class NeonTube
             uint8_t failsVariation = 0
         );
         void setDigitalPattern(
-            uint8_t *patternCustom,
+            const uint8_t *patternCustom,
             uint8_t patternSize = 0,
             uint8_t patternRythm = 20
         );
         void setAnalogPattern(
-            uint8_t *patternCustom,
+            const uint8_t *patternCustom,
             uint8_t patternSize = 0,
             uint8_t patternRythm = 20
         );
@@ -76,7 +76,7 @@ class NeonTube
 
         uint8_t patternIndex;
         uint8_t patternSize;
-        uint8_t *patternPointer;
+        const uint8_t *patternPointer;
         uint8_t patternRythm;
 
         uint32_t failsInterval;  // average fail interval in seconds, 0=no fails
@@ -88,6 +88,8 @@ class NeonTube
         void runStop();
 
         NTTimer lightTimer;
+
+        static const uint8_t myDigital[];
 };
 
 #endif
