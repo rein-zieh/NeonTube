@@ -58,11 +58,12 @@ NTTimer dccTimer;
 NeonTube tube0;
 NeonTube tube1;
 NeonTube tube2;
-NeonTube tube3;
 
+/* FTB Druckerraum */
 const uint8_t myAnalog[] = {
-  10, 40, 255, 0, 10, 20, 30, 40, 50, 200, 
-  10, 40, 255, 0, 10, 20, 30, 40, 50, 200
+  0, 220, 40, 10, 0, 0, 0, 0, 0, 0, 
+  220, 80, 20, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 180, 210, 230, 255
 };
 
 const uint8_t myDigital[] = {
@@ -106,11 +107,11 @@ void setup() {
   dccTimer.set(7000,dcc_status_toggle);
 
   tube0.init(0, 1000);
-  tube0.setAnalogPattern(myAnalog, sizeof(myAnalog)/sizeof(myAnalog[0]), 25);
+  tube0.setAnalogPattern(myAnalog, sizeof(myAnalog)/sizeof(myAnalog[0]), 40);
   
   tube1.init(1, 0);
   
-  tube2.init(2, 1200);
+  tube2.init(2, 1400);
   tube2.setDigitalPattern(myDigital, sizeof(myDigital)/sizeof(myDigital[0]), 25);
 
 }
