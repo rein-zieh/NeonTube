@@ -1,7 +1,7 @@
 /*
  * neontube.ino
  *
- * Neon Tube - V 0.2 (Proof of concept)
+ * Neon Tube - V 0.3 (Proof of concept)
  * Toolkit for simulating a neon tube
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,12 +58,12 @@ NTTimer dccTimer;
 NeonTube tube0;
 NeonTube tube1;
 NeonTube tube2;
+NeonTube tube3;
 
-/* FTB Druckerraum */
 const uint8_t myAnalog[] = {
-  0, 220, 40, 10, 0, 0, 0, 0, 0, 0, 
-  220, 80, 20, 0, 0, 0, 0, 0, 0, 0, 
-  0, 0, 0, 180, 210, 230, 255
+  0, 30, 60, 90, 120, 150, 180, 220, 0, 0, 
+  0, 0, 0, 0, 0, 50, 100, 150, 200, 0, 
+  0, 0, 0, 0, 0, 120, 255
 };
 
 const uint8_t myDigital[] = {
@@ -71,17 +71,6 @@ const uint8_t myDigital[] = {
     1, 1, 1, 0, 0, 0, 0, 0, 1, 1,
     1, 0, 0, 0, 0, 1, 1, 1, 0, 0,
 };
-
-// 
-/*uint8_t patternAnalog[] = {
-      0,   0,  10,  20,  30,  30,  40,  50,  60,  70,
-     80,  70,  70,  60,  60,  50,  50,  50,  60,  70, 
-     80,  90, 100, 120, 140, 160, 240, 250, 100, 150,
-    250, 250, 140, 240, 230, 220, 100,  80,  70,  70,
-     70,  80,  80, 140, 130, 120, 110, 200, 210, 220,
-    220, 100,  90,  40,  30,  30,  30,  20,  10,  10 
-}; */
-
 
 /*
  * Functions
@@ -93,10 +82,12 @@ void dcc_status_toggle (NTTimer &timer) {
     tube0.on(); 
     tube1.on(); 
     tube2.on();
+    tube3.on();
   } else {
     tube0.off();
     tube1.off();
     tube2.off();
+    tube3.off();
   }
 }
 
@@ -104,15 +95,25 @@ void dcc_status_toggle (NTTimer &timer) {
  * SETUP
  */
 void setup() {
-  dccTimer.set(7000,dcc_status_toggle);
+  // Timer instead of a dcc signal
+  dccTimer.set(10000,dcc_status_toggle);
 
-  tube0.init(0, 1000);
-  tube0.setAnalogPattern(myAnalog, sizeof(myAnalog)/sizeof(myAnalog[0]), 40);
+  //Tube 0: random start delay zero to 1 second; analog custom start pattern; some failures during runtime
+  tube0.init(0, random(0,1000));
+  tube0.setAnalogPattern(40, myAnalog, sizeof(myAnalog)/sizeof(myAnalog[0]));
+  tube0.setFails(10, 200, 50);
   
+  //Tube 1: no start delay; no pattern; no failures during runtime
   tube1.init(1, 0);
   
-  tube2.init(2, 1400);
-  tube2.setDigitalPattern(myDigital, sizeof(myDigital)/sizeof(myDigital[0]), 25);
+  //Tube 2: 500ms start delay; default digital start pattern; no failures during runtime
+  tube2.init(2, 500);
+  tube2.setDigitalPattern();
+
+  //Tube 3: random start delay zero to 2 second; custom digital start pattern; few failures during runtime
+  tube3.init(3, random(0,2000));
+  tube3.setDigitalPattern(25, myDigital, sizeof(myDigital)/sizeof(myDigital[0]));
+  tube0.setFails(30, 50, 50);
 
 }
  
@@ -124,4 +125,5 @@ void loop() {
   tube0.run();
   tube1.run();
   tube2.run();
+  tube3.run();
 }

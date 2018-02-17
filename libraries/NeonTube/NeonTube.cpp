@@ -1,7 +1,7 @@
 /*
  * NeonTube.cpp 
  *
- * Neon Tube - V 0.2 (Proof of concept)
+ * Neon Tube - V 0.3 (Proof of concept)
  * Toolkit for simulating a neon tube
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,9 +26,24 @@
 
 #include "NeonTube.h"
 
+/*
+ * Constructur
+ */
 NeonTube::NeonTube() {
     reset();
 }
+
+const uint8_t NeonTube::defaultAnalog[] = {
+    0, 220, 40, 10, 0, 0, 0, 0, 0, 0, 
+    220, 80, 20, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 180, 210, 230, 255
+};
+
+const uint8_t NeonTube::defaultDigital[] = {
+    1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 0, 0, 0, 0, 0, 1, 1,
+    1, 0, 0, 0, 0, 1, 1, 1, 0, 0
+};
 
 void NeonTube::reset() {
     pin = 0;
@@ -45,6 +60,7 @@ void NeonTube::reset() {
 
     failsInterval = 0;
     failsVariation = 0;
+    failsDuration = 10;
 
     lightTimer.set(0);
 }
@@ -59,33 +75,40 @@ void NeonTube::init(uint8_t pin, uint32_t startDelay) {
 
 }
 
-void NeonTube::setFails(uint32_t failsInterval, uint8_t failsVariation) {
+void NeonTube::setFails(uint16_t failsInterval, uint8_t failsVariation, uint8_t failsDuration) {
     this->failsInterval = failsInterval;
     this->failsVariation = failsVariation;
+    this->failsDuration = failsDuration;
 }
 
-void NeonTube::setDigitalPattern(const uint8_t *patternCustom, uint8_t patternSize, uint8_t patternRythm) {
+void NeonTube::setDigitalPattern(uint8_t patternRythm, const uint8_t *patternCustom, uint8_t patternSize) {
+    pattern = NT_DIGITALPATTERN;
+    patternIndex = 0;
+    this->patternRythm = patternRythm;
+
     if (patternCustom) {
-        this->pattern = NT_DIGITALPATTERN;
         this->patternSize = patternSize;
         this->patternPointer = patternCustom;
-        this->patternRythm = patternRythm;
-    } else {
-        this->patternSize = 0;
-    }
-    patternIndex = 0;
+        return;
+    } 
+
+    this->patternPointer = defaultDigital;
+    this->patternSize = sizeof(defaultDigital)/sizeof(defaultDigital[0]);
 }
 
-void NeonTube::setAnalogPattern(const uint8_t *patternCustom, uint8_t patternSize, uint8_t patternRythm) {
+void NeonTube::setAnalogPattern(uint8_t patternRythm, const uint8_t *patternCustom, uint8_t patternSize) {
+    pattern = NT_ANALOGPATTERN;
+    patternIndex = 0;
+    this->patternRythm = patternRythm;
+
     if (patternCustom) {
-        this->pattern = NT_ANALOGPATTERN;
         this->patternSize = patternSize;
         this->patternPointer = patternCustom;
-        this->patternRythm = patternRythm;
-    } else {
-        this->patternSize = 0;
-    }
-    patternIndex = 0;
+        return;
+    } 
+
+    this->patternPointer = defaultAnalog;
+    this->patternSize = sizeof(defaultAnalog)/sizeof(defaultAnalog[0]);
 }
 
 void NeonTube::on() {
@@ -109,7 +132,7 @@ void NeonTube::run() {
  *       case NT_START   : runStart();   break;
  *       case NT_STOP    : runStop();    break;
  *   }
- * To avoid lookup table in RAM memory
+ * To avoid a lookup table in RAM memory
  */
     if (runState == NT_PATTERN) { runPattern(); return; }
     if (runState == NT_GLOW)    { runGlow();    return; }
@@ -131,6 +154,7 @@ void NeonTube::runStart() {
                 return;
             }
             case NT_NOPATTERN : {
+                if (failsInterval) lightTimer.set(100 * failsInterval + random(0, failsInterval * failsVariation));
                 ledState = 1;
                 digitalWrite(pin, 1);
                 runState = NT_GLOW;
@@ -148,14 +172,13 @@ void NeonTube::runPattern() {
             digitalWrite(pin, 1);
             runState = NT_GLOW;
             return;
-        } else {
-            if ( *(patternPointer + patternIndex) != ledState) {
-                ledState = *(patternPointer + patternIndex);
-                if (pattern == NT_DIGITALPATTERN)
-                    digitalWrite(pin, ledState);
-                else
-                    analogWrite(pin, ledState);
-            }
+        } 
+        if ( *(patternPointer + patternIndex) != ledState) {
+            ledState = *(patternPointer + patternIndex);
+            if (pattern == NT_DIGITALPATTERN)
+                digitalWrite(pin, ledState);
+            else
+                analogWrite(pin, ledState);
         }
         patternIndex++;
 
@@ -163,7 +186,17 @@ void NeonTube::runPattern() {
 }
 
 void NeonTube::runGlow() {
-    // evtl. Fehler einstreuen
+    if (failsInterval && lightTimer.check()) {
+        if (ledState) {
+            ledState = 0;
+            digitalWrite(pin, 0);
+            lightTimer.set(failsDuration);
+        } else {
+            ledState = 1;
+            digitalWrite(pin, 1);
+            lightTimer.set(100 * failsInterval + random(0, failsInterval * failsVariation));
+        }
+    }
 }
 
 void NeonTube::runStop() {

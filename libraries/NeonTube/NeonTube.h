@@ -1,7 +1,7 @@
 /*
  * NeonTube.h
  *
- * Neon Tube - V 0.2 (Proof of concept)
+ * Neon Tube - V 0.3 (Proof of concept)
  * Toolkit for simulating a neon tube
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,6 @@
 #include "Arduino.h"
 #include "NTTimer.h"
 
-
 class NeonTube
 {
     public:
@@ -44,18 +43,19 @@ class NeonTube
             uint32_t startDelay = 0
         );
         void setFails(
-            uint32_t failsInterval = 0, 
-            uint8_t failsVariation = 0
+            uint16_t failsInterval = 0, //in 1/10 seconds
+            uint8_t failsVariation = 0,
+            uint8_t failsDuration = 10
         );
         void setDigitalPattern(
-            const uint8_t *patternCustom,
-            uint8_t patternSize = 0,
-            uint8_t patternRythm = 20
+            uint8_t patternRythm = 25, //in ms. / ca. 40 Hz.
+            const uint8_t *patternCustom = NULL,
+            uint8_t patternSize = 0
         );
         void setAnalogPattern(
-            const uint8_t *patternCustom,
-            uint8_t patternSize = 0,
-            uint8_t patternRythm = 20
+            uint8_t patternRythm = 25, //in ms. / ca. 40 Hz.
+            const uint8_t *patternCustom = NULL,
+            uint8_t patternSize = 0
         );
 
         void on();
@@ -79,8 +79,9 @@ class NeonTube
         const uint8_t *patternPointer;
         uint8_t patternRythm;
 
-        uint32_t failsInterval;  // average fail interval in seconds, 0=no fails
+        uint16_t failsInterval; // average fail interval in seconds, 0=no fails
         uint8_t failsVariation; // fail variation, 0=exact, 100= up to +100%
+        uint8_t failsDuration; // duration of the failure in 10 x miliseconds
 
         void runStart();
         void runPattern();
@@ -89,7 +90,8 @@ class NeonTube
 
         NTTimer lightTimer;
 
-        static const uint8_t myDigital[];
+        static const uint8_t defaultAnalog[27];
+        static const uint8_t defaultDigital[30];
 };
 
 #endif

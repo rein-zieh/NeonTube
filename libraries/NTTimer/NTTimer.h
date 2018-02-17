@@ -1,7 +1,7 @@
 /*
  * NTTimer.h 
  *
- * Neon Tube - V 0.2 (Proof of concept)
+ * Neon Tube - V 0.3 (Proof of concept)
  * Toolkit for simulating a neon tube
  *
  * This program is free software: you can redistribute it and/or modify
