@@ -1,7 +1,7 @@
 /*
  * NeonTube.cpp 
  *
- * Neon Tube - V 0.3 (Proof of concept)
+ * Neon Tube - V 1.0 
  * Toolkit for simulating a neon tube
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,9 +19,7 @@
  *
  * Neon Tube Copyright (C) 2018 Frank Reins (github@rein-zieh.de)
  *
- * This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
- * This is free software, and you are welcome to redistribute it
- * under certain conditions; type `show c' for details.
+ * This program comes with ABSOLUTELY NO WARRANTY
  */
 
 #include "NeonTube.h"
