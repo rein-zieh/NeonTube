@@ -17,7 +17,9 @@ entwickelt und getestet.
 
 Im Variablen-Bereich des Sketch können Instanzen der NeonTube-Klasse erzeugt werden:
 
-    NeonTube tube1;
+```C++
+NeonTube tube1;
+```
 
 ### Initialisieren / Setup
 
@@ -35,15 +37,21 @@ Parameter:
 
 Neonröhre an Pin 1:
 
-    tube1.init(1);
+```C++
+tube1.init(1);
+```
 
 Neonröhre an Pin 0, Einschaltverzögerung 1 Sekunde:
 
-    tube1.init(1, 1000);
+```C++
+tube1.init(1, 1000);
+```
 
 Neonröhre an Pin 0, Einschaltverzögerung zufällig zwischen 0,5 und 2 Sekunden:
 
-    tube1.init(1, random(500,2000));
+```C++
+tube1.init(1, random(500,2000));
+```
 
 
 ### Funktionen zur Laufzeit
