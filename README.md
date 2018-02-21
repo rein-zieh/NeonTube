@@ -29,9 +29,10 @@ muss zumindest der Anschluss-Pin zugeordnet werden.
 #### Funktion `init`
 
 Rückgabe: -
+
 Parameter:
 - `uint8_t pin`: Pin-Id
-- `uint32_t startDelay`: Startverzögerung in Milli-Sekunden
+- `uint32_t startDelay`: Startverzögerung in Milli-Sekunden (optional)
 
 **Beispiele:**
 
@@ -44,14 +45,23 @@ tube1.init(1);
 Neonröhre an Pin 0, Einschaltverzögerung 1 Sekunde:
 
 ```C++
-tube1.init(1, 1000);
+tube1.init(0, 1000);
 ```
 
 Neonröhre an Pin 0, Einschaltverzögerung zufällig zwischen 0,5 und 2 Sekunden:
 
 ```C++
-tube1.init(1, random(500,2000));
+tube1.init(0, random(500,2000));
 ```
+
+#### Funktion `setDigitalPattern`
+
+Rückgabe: -
+
+Parameter:
+- `uint8_t patternRythm`: 
+- `uint8_t *patternCustom`: Muster für das 
+- `uint8_t patternSize`:
 
 
 ### Funktionen zur Laufzeit
