@@ -1,5 +1,5 @@
 # NeonTube
-Ein einfaches Arduino-Bibliothek (Toolkit) zur Simulation von Neonröhren mittels Leuchtdioden im Modell.
+Eine einfache Arduino-Bibliothek (Toolkit) zur Simulation von Neonröhren mittels Leuchtdioden im Modellbau.
 
 ## Version 1.0
 
@@ -26,12 +26,14 @@ NeonTube tube1;
 Initialisiert und parametrisiert werden die LEDs in der `setup()`-Funktion des Sketch. Bei der Initialisierung 
 muss zumindest der Anschluss-Pin zugeordnet werden.
 
-#### Funktion `init`
+#### Funktion init
 
-Rückgabe: -
-Parameter:
-- `uint8_t pin`: Pin-Id
-- `uint32_t startDelay`: Startverzögerung in Milli-Sekunden
+```C++
+void init (
+  uint8_t pin // Pin-Id
+  uint32_t startDelay = 0 // Startverzögerung in Milli-Sekunden (default = 0)
+)
+```
 
 **Beispiele:**
 
@@ -44,13 +46,13 @@ tube1.init(1);
 Neonröhre an Pin 0, Einschaltverzögerung 1 Sekunde:
 
 ```C++
-tube1.init(1, 1000);
+tube1.init(0, 1000);
 ```
 
 Neonröhre an Pin 0, Einschaltverzögerung zufällig zwischen 0,5 und 2 Sekunden:
 
 ```C++
-tube1.init(1, random(500,2000));
+tube1.init(0, random(500,2000));
 ```
 
 
