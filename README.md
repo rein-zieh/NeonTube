@@ -96,20 +96,24 @@ tube1.setDigitalPattern(25, myDigital, 30);
 ### Funktionen zur Laufzeit
 
 
-## License
-Please check the file LICENSE.md for the details.
+## Lizenz
+Details entnehmen Sie bitte der Datei LICENSE.md.
 
-I appreciate if you give credits when appropriate, and if you want to donate, please donate to the linked Children Hospice Charity: http://www.akhd-luenen.de
+Falls Sie das Toolkit verwenden würde ich mich über Credits freuen. Wenn Sie das Toolkit schätzen und etwas spenden möchten, dann spenden Sie bitte an den verlinkten Kinder- und Jugendhospizdienst Lünen: http://www.akhd-luenen.de
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Dieses Programm ist freie Software: Sie können es weitergeben und/oder modifizieren 
+unter den Bedingungen der GNU General Public License, veröffentlicht von
+die Free Software Foundation, entweder Version 3 der Lizenz, oder
+(nach Ihrer Wahl) jede spätere Version.
 
-## Warranty
+## Garantie/Gewährleistung
+
+Dieses Programm wird OHNE JEGLICHE GEWÄHRLEISTUNG oder GARANTIE weitergegeben.
+Lesen die GNU General Public License für weitere Details.
+
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-Regards, Frank
+Gruß, Frank
