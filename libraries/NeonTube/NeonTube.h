@@ -46,7 +46,7 @@ class NeonTube
             uint8_t failsDuration = 10
         );
         void setDigitalPattern(
-            uint8_t patternRythm = 25, //in ms. / ca. 40 Hz.
+            uint8_t patternRythm = 40, //in ms. / ca. 25 Hz.
             const uint8_t *patternCustom = NULL,
             uint8_t patternSize = 0
         );
