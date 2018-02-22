@@ -64,9 +64,10 @@ der Neonröhre abgespielt. Zusätzlich kann die Zeit angegeben werden, in deren 
 
 ```C++
 void function setDigitalPattern (
-  uint8_t patternRythm = 40, // Millisekunden zwischen den Statusänderungen in ms. (40 ms entsprechen 25 Hz).
+  uint8_t patternRythm = 40, // Millisekunden zwischen den Statusänderungen in ms.
   const uint8_t *patternCustom = NULL, // Zeiger auf das Custom-Array mit dem Flacker-Muster
   uint8_t patternSize = 0 //Größe des Arrays
+)
 ```
 **Beispiele**
 
@@ -74,8 +75,9 @@ Standard-Flacker-Muster der NeonTube-Klasse mit dem Standard-Rythmus von 40ms pr
 
 ```C++
 tube1.setDigitalPattern();
+```
 
-Standard-Flacker-Muster der NeonTube-Klasse aber mit einem beschleunigten Rythmus von 20ms pro Status (entspricht 50Hz.). 
+Standard-Flacker-Muster der NeonTube-Klasse aber mit einem beschleunigten Rythmus von 20ms pro Status, dies entspricht ca. 50Hz. 
 
 ```C++
 tube1.setDigitalPattern(20);
