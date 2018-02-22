@@ -31,8 +31,8 @@ Bei der Initialisierung muss zumindest der Anschluss-Pin (pin) zugeordnet werden
 Startverzögerung (startDelay) in Millisekunden angegeben werden.
 
 ```C++
-void function init (
-  uint8_t pin, // Pin-Id
+void init (
+  uint8_t pin,            // Pin-Id
   uint32_t startDelay = 0 // Startverzögerung in Milli-Sekunden (default = 0)
 )
 ```
@@ -59,31 +59,34 @@ tube1.init(0, random(500,2000));
 
 #### Funktion setDigitalPattern
 
-Mit der Funktion ```setDigitalPattern``` wird der Neonröhre ein Flacker-Muster zugeordnet. Das Muster wird beim Starten
-der Neonröhre abgespielt. Zusätzlich kann die Zeit angegeben werden, in deren Rythmus die einzelnen Zustandsänderungen im Muster erfolgen sollen. Ein digitales Flacker-Muster besteht nur aus 0- und 1-Elementen für den entsprechenden Status LED an und LED aus. Digitale Muster können an allen I/O-Ausgängen des Boards verwendet werden.
+Mit der Funktion ```setDigitalPattern``` wird der Neonröhre ein digitales Flacker-Muster zugeordnet.
+Das Muster wird beim Starten der Neonröhre abgespielt. Zusätzlich kann die Zeit angegeben werden, 
+in deren Rhythmus die einzelnen Zustandsänderungen im Muster erfolgen sollen. Ein digitales Flacker-Muster 
+besteht nur aus einem Feld (Array) aus 0- und 1-Werten für den entsprechenden Status LED an und LED aus. Digitale Muster 
+können an allen I/O-Ausgängen des Boards verwendet werden.
 
 ```C++
-void function setDigitalPattern (
-  uint8_t patternRythm = 40, // Millisekunden zwischen den Statusänderungen in ms.
+void setDigitalPattern (
+  uint8_t patternRythm = 40,           // Millisekunden zwischen den Statusänderungen in ms.
   const uint8_t *patternCustom = NULL, // Zeiger auf das Custom-Array mit dem Flacker-Muster
-  uint8_t patternSize = 0 //Größe des Arrays
+  uint8_t patternSize = 0              // Größe des Arrays
 )
 ```
 **Beispiele**
 
-Standard-Flacker-Muster der NeonTube-Klasse mit dem Standard-Rythmus von 40ms pro Status: 
+Ein digitales Standard-Flacker-Muster der NeonTube-Klasse mit dem Standard-Rhythmus von 40ms pro Status: 
 
 ```C++
 tube1.setDigitalPattern();
 ```
 
-Standard-Flacker-Muster der NeonTube-Klasse aber mit einem beschleunigten Rythmus von 20ms pro Status, dies entspricht ca. 50Hz. 
+Digitales Standard-Flacker-Muster der NeonTube-Klasse, aber mit einem beschleunigten Rhythmus von 20ms pro Status, dies entspricht ca. 50Hz.:
 
 ```C++
 tube1.setDigitalPattern(20);
 ```
 
-Verwende eigenes Flacker-Muster mit 30 Elementen, verwende dazu einen Rythmus von 25ms pro Element.
+Verwende ein eigenes Flacker-Muster mit 30 Elementen, verwende dazu einen Rhythmus von 25ms pro Element:
 
 ```C++
 const uint8_t myDigital[] = {
@@ -95,27 +98,59 @@ const uint8_t myDigital[] = {
 tube1.setDigitalPattern(25, myDigital, 30);
 ```
 
+#### Funktion setAnalogPattern
+
+Mit der Funktion ```setAnalogPattern``` wird der Neonröhre ein analoges Flacker-Muster zugeordnet.
+Das Muster wird beim Starten der Neonröhre abgespielt. Zusätzlich kann die Zeit angegeben werden, 
+in deren Rhythmus die einzelnen Zustandsänderungen im Muster erfolgen sollen. Ein analoges Flacker-Muster 
+besteht aus einem Feld von Werten zwischen 0 und 255 die für eine entsprechenden Helligkeit der LED stehen. 
+Analoge Muster können nur an I/O-Ausgängen mit PWM-Fähigkeiten verwendet werden.
+
+```C++
+void setAnalogPattern(
+    uint8_t patternRythm = 40,           // Millisekunden zwischen den Statusänderungen in ms.
+    const uint8_t *patternCustom = NULL, // Zeiger auf das Custom-Array mit dem Flacker-Muster
+    uint8_t patternSize = 0              // Größe des Arrays
+);
+```
+
+**Beispiele**
+
+Ein analoges Standard-Flacker-Muster der NeonTube-Klasse mit dem Standard-Rhythmus von 40ms pro Status: 
+
+```C++
+tube1.setAnalogPattern();
+```
+
+Analoges Standard-Flacker-Muster der NeonTube-Klasse, aber mit einem beschleunigten Rhythmus von 20ms pro Status, dies entspricht ca. 50Hz.:
+
+```C++
+tube1.setAnalogPattern(20);
+```
+
+Verwende ein eigenes Flacker-Muster mit 27 Elementen, verwende dazu einen Rhythmus von 40ms pro Element:
+
+```C++
+const uint8_t myAnalog[] = {
+    0, 220, 40, 10, 0, 0, 0, 0, 0, 0, 
+    220, 80, 20, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 180, 210, 230, 255
+};
+
+tube1.setAnalogPattern(40, myDigital, 27);
+```
+
 ### Funktionen zur Laufzeit
+
+```C++
+void function run();
+```
 
 
 ## Lizenz
 Details entnehmen Sie bitte der Datei LICENSE.md.
 
-Falls Sie das Toolkit verwenden würde ich mich über Credits freuen. Wenn Sie das Toolkit schätzen und etwas spenden möchten, dann spenden Sie bitte an den verlinkten Kinder- und Jugendhospizdienst Lünen: http://www.akhd-luenen.de
-
-Dieses Programm ist freie Software: Sie können es weitergeben und/oder modifizieren 
-unter den Bedingungen der GNU General Public License, veröffentlicht von
-die Free Software Foundation, entweder Version 3 der Lizenz, oder
-(nach Ihrer Wahl) jede spätere Version.
-
-## Garantie/Gewährleistung
-
 Dieses Programm wird OHNE JEGLICHE GEWÄHRLEISTUNG oder GARANTIE weitergegeben.
 Lesen die GNU General Public License für weitere Details.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-Gruß, Frank
+Falls Sie das Toolkit verwenden würde ich mich über Credits freuen. Wenn Sie das Toolkit schätzen und etwas spenden möchten, dann spenden Sie bitte an den verlinkten Kinder- und Jugendhospizdienst Lünen: http://www.akhd-luenen.de
